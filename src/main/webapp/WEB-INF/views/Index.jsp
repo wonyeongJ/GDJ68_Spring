@@ -13,6 +13,8 @@
 <body>
  	<c:import url="./temp/header.jsp"></c:import>
 	
+	<img alt="image" src="/resources/upload/member/1607.png">
+	
 	<c:if test="${sessionScope.member ne null}">
 	<h1>로그인 상태</h1>
 	</c:if>
@@ -20,8 +22,6 @@
 	<c:if test="${empty member}">
 	<h1>비로그인 상태</h1>
 	</c:if>
-	
-	<img alt="image" src="/resources/images/img1.jpeg">
 	
 	</body>
 </html> 

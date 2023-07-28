@@ -2,55 +2,43 @@ package com.pbw.main.student;
 
 public class StudentDTO {
 
-	private Integer studentNum;
-	private String studentName;
-	private Integer studentKor;
-	private Integer studentEng;
-	private Integer studentMath;
-	private Integer studentTotal;
-	private Double studentAvg;
+	private Integer num;
+	private String name;
+	private Integer korean;
+	private Integer eng;
+	private Integer math;
 	
-	public Integer getStudentNum() {
-		return studentNum;
+	public Integer getNum() {
+		return num;
 	}
-	public void setStudentNum(Integer studentNum) {
-		this.studentNum = studentNum;
+	public void setNum(Integer num) {
+		this.num = num;
 	}
-	public String getStudentName() {
-		return studentName;
+	public String getName() {
+		return name;
 	}
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public Integer getStudentKor() {
-		return studentKor;
+	public Integer getKorean() {
+		return korean;
 	}
-	public void setStudentKor(Integer studentKor) {
-		this.studentKor = studentKor;
+	public void setKorean(Integer korean) {
+		this.korean = korean;
 	}
-	public Integer getStudentEng() {
-		return studentEng;
+	public Integer getEng() {
+		return eng;
 	}
-	public void setStudentEng(Integer studentEng) {
-		this.studentEng = studentEng;
+	public void setEng(Integer eng) {
+		this.eng = eng;
 	}
-	public Integer getStudentMath() {
-		return studentMath;
+	public Integer getMath() {
+		return math;
 	}
-	public void setStudentMath(Integer studentMath) {
-		this.studentMath = studentMath;
+	public void setMath(Integer math) {
+		this.math = math;
 	}
-	public Integer getStudentTotal() {
-		return studentTotal;
-	}
-	public void setStudentTotal(Integer studentTotal) {
-		this.studentTotal = studentTotal;
-	}
-	public Double getStudentAvg() {
-		return studentAvg;
-	}
-	public void setStudentAvg(Double studentAvg) {
-		this.studentAvg = studentAvg;
-	}
+	
+	
 	
 }

@@ -12,6 +12,7 @@ public class MemberDTO {
 	private String name;
 	private String email;
 	private Date birth;
+	private MemberFileDTO memberFileDTO;
 	
 	public String getId() {
 		return id;
@@ -44,5 +45,12 @@ public class MemberDTO {
 		this.birth = birth;
 	}
 	
+	public MemberFileDTO getMemberFileDTO() {
+		return memberFileDTO;
+	}
+	
+	public void setMemberFileDTO(MemberFileDTO memberFileDTO) {
+		this.memberFileDTO = memberFileDTO;
+	}
 	
 }

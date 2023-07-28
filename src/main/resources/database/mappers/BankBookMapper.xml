@@ -4,38 +4,120 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.pbw.main.bankbook.BankBookDAO">
-  	<select id="getDetail" resultType="BankBookDTO" parameterType="BankBookDTO">  <!-- 이 태그를 사용하려고 하는 클래스의 메서드명으로 ID작성 -->
-  		SELECT * FROM BANKBOOK WHERE BOOKNUM=#{bookNum}
-  	</select>
-  	
-  	<select id="getList" resultType="BankBookDTO">
-  		SELECT BOOKNUM, BOOKNAME, BOOKRATE, BOOKSALE FROM BANKBOOK ORDER BY BOOKNUM DESC
-  	</select>
-  	
-  	<insert id="setAdd" parameterType="BankBookDTO"> <!-- CRUD는 result타입이 없음 결과가 정수로옴 1,0 -->
-  		INSERT INTO BANKBOOK VALUES (BANK_SEQ.NEXTVAL, #{bookName}, #{bookRate}, #{bookSale}, #{bookContents})
-  	</insert>
-  	
-  	<delete id="setDelete" parameterType="BankBookDTO">
-  		DELETE BANKBOOK WHERE BOOKNUM=#{bookNum}
-  	</delete>
-  	<!-- 
-  	<delete id="setDelete" parameterType="java.lang.Long">
-  		DELETE BANKBOOK WHERE BOOKNUM=#{num}
-  	</delete>
-  	 -->
-  	
-  	<update id="setUpdate" parameterType="BankBookDTO">
-  		UPDATE 
-  			BANKBOOK 
-  		SET 
-  			BOOKNAME=#{bookName},
-  			BOOKRATE=#{bookRate},
-  			BOOKSALE=#{bookSale},
-  			BOOKCONTENTS=#{bookContents}
-  		WHERE
-  			BOOKNUM=#{bookNum}
-  	</update>
-  	
-  	
+  	<sql id="sql">
+		BOOKNUM>0
+		<choose>
+			<when test="kind == 'name'">
+				AND BOOKNAME LIKE '%' || #{search} || '%'	
+			</when>
+			<otherwise>
+				AND BOOKCONTENTS LIKE '%' || #{search} || '%'
+			</otherwise>
+		</choose>
+  	</sql>
+  
+	<select id="getTotal" resultType="Long" parameterType="com.pbw.main.util.Pager">
+		SELECT
+			COUNT(BOOKNUM)
+		FROM
+			BANKBOOK
+		WHERE
+			<include refid="sql"></include>
+	</select>
+	
+	<select id="getList" parameterType="com.pbw.main.util.Pager" resultType="BankBookDTO" >
+		SELECT 
+			BOOKNUM,
+			BOOKNAME,
+			BOOKRATE,
+			BOOKSALE
+		FROM	
+			(
+			SELECT
+				ROWNUM R,
+				B.* FROM
+				(
+					SELECT
+						*
+					FROM
+						BANKBOOK
+					WHERE
+						<include refid="sql"></include>
+						
+						<!-- 
+						<if test="kind == 'name'">
+							AND BOOKNAME LIKE '%검색어%'
+						</if>
+						<if test="kind == 'contents'">
+							AND BOOKCONTENTS LIKE '%검색어%'
+						</if>
+						 -->
+					ORDER BY BOOKNUM DESC
+				) B
+			)
+		WHERE
+			R BETWEEN #{startRow} 
+			AND #{lastRow}
+	</select>
+	
+	<select id="getDetail" resultType="BankBookDTO"  parameterType="BankBookDTO">
+		SELECT * FROM BANKBOOK WHERE BOOKNUM=#{bookNum}
+	</select>
+	
+	<resultMap type="BankBookDTO" id="getDetailResult">
+		<id column="BOOKNUM" property="bookNum"/>
+		<result column="BOOKNAME" property="bookName"/>
+		<result column="BOOKCONTENTS" property="bookContents"/>
+		<result column="BOOKRATE" property="bookRate"/>
+		<result column="BOOKSALE" property="bookSale"/>
+		<collection property="fileDTOs" javaType="List" ofType="BankBookFileDTO">
+			<id column="FILENUM" property="fileNum"/>
+			<result column="FILENAME" property="fileName"/>
+			<result column="ORIGINALNAME" property="originalName"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getSequence" resultType="Long">
+		SELECT BANK_SEQ.NEXTVAL FROM DUAL
+	</select>
+	
+	<insert id="setAdd" parameterType="BankBookDTO">
+		<selectKey keyProperty="bookNum" resultType="Long" order="BEFORE">
+			SELECT
+				BANK_SEQ.NEXTVAL
+			FROM
+				DUAL
+		</selectKey>
+		INSERT INTO
+			BANKBOOK 
+		VALUES
+			(
+			#{bookNum},
+			#{bookName},
+			#{bookRate},
+			#{bookSale},
+			#{bookContents}
+			)
+	</insert>
+	
+	<insert id="setFileAdd" parameterType="BankBookFileDTO">
+		INSERT INTO BANKFILE (FILENUM,BOOKNUM, FILENAME, ORIGINALNAME)
+		VALUES (BANK_SEQ.NEXTVAL, #{bookNum}, #{fileName}, #{originalName})
+	</insert>
+	
+	<update id="setUpdate" parameterType="BankBookDTO">
+		UPDATE BANKBOOK	SET
+		BOOKNAME=#{bookName},
+		BOOKRATE=#{bookRate},
+		BOOKSALE=#{bookSale},
+		BOOKCONTENTS=#{bookContents}
+		WHERE BOOKNUM=#{bookNum}
+	</update>
+	
+	<delete id="setDelete" parameterType="Long">
+		DELETE BANKBOOK WHERE BOOKNUM=#{num}
+	</delete>
+	
+
+
   </mapper>

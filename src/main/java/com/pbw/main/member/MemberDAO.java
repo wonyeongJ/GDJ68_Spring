@@ -14,6 +14,12 @@ public class MemberDAO {
 		return sqlSession.selectOne(NAMESPACE+"getLogin", memberDTO);
 	}
 	
+	public int setJoin(MemberDTO memberDTO) throws Exception {
+		return sqlSession.insert(NAMESPACE+"setJoin", memberDTO);
+	}
 	
+	public int setFileJoin(MemberFileDTO memberFileDTO) throws Exception {
+		return sqlSession.insert(NAMESPACE+"setFileJoin", memberFileDTO); 
+	}
 	
 }
