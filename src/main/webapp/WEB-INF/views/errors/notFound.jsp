@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>NotFound</h1>
+	<h1>페이지가 없다</h1>
 </body>
 </html>

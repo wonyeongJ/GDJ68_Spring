@@ -14,7 +14,7 @@
 	<section class="container mt-5">
 	<h1 class="my-4">Add Page</h1>
 	
-	<form action="./add" method="post">
+	<form action="./add" method="post" enctype="multipart/form-data">
 		<div class="mb-3">
 		  <label for="bookName" class="form-label">상품명</label>
 		  <input type="text" name="bookName" class="form-control" id="bookName" placeholder="상품명">
@@ -40,6 +40,19 @@
 		   판매중단
 		  </label>
 		</div>
+		
+		<div class="mb-3">
+		  <label for="pic" class="form-label">사진첨부</label>
+		  <input type="file" name="photos" class="form-control" id="pic" placeholder="PW를 입력하세요">
+		</div>
+		<div class="mb-3">
+		  <label for="pic" class="form-label">사진첨부</label>
+		  <input type="file" name="photos" class="form-control" id="pic" placeholder="PW를 입력하세요">
+		</div>
+		<div class="mb-3">
+		  <label for="pic" class="form-label">사진첨부</label>
+		  <input type="file" name="photos" class="form-control" id="pic" placeholder="PW를 입력하세요">
+		</div>				
 
 		<div class="my-3">
 			<button type="submit" class="btn btn-danger">상품등록</button>

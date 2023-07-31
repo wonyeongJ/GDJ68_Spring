@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,28 +9,31 @@
 <c:import url="../temp/bootStrap.jsp"></c:import>
 </head>
 <body>
-	<c:import url="../temp/header.jsp"></c:import>
-	<section class="container mt-5">	
-		<h1 class="my-4">My Page</h1>
+<c:import url="../temp/header.jsp"></c:import>
+<section class="container mt-5">	
+	<h1 class="my-4">My Page</h1>
+	
+	<div>
+		<p>
+			<img alt="" src="../resources/upload/member/${member.memberFileDTO.fileName}">
+		</p>
+		<p>
+			${member.id} : ${sessionScope.member.name}
+		</p>
+		<p>
+			${member.email}
+		</p>
+		<p>
+			${member.birth}
+		</p>
 		
-		<div>
-			<p>
-				<img alt="" src="../resources/upload/member/${member.memberFileDTO.fileName}">
-			</p>
-			<p>
-				${member.id} : ${sessionScope.member.name}
-			</p>
-			<p>
-				${member.email}
-			</p>
-			<p>
-				${member.birth}
-			</p>
-		</div>
+		
+	</div>
 
+	<a class="btn btn-primary" href="./memberUpdate">회원수정</a>
 	
 	
-	</section>
+</section>
 
 </body>
 </html>

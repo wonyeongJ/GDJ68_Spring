@@ -3,67 +3,54 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.pbw.main.bankbook.BankBookDAO">
-  	<sql id="sql">
-		BOOKNUM>0
+  <mapper namespace="com.iu.main.bankBook.BankBookDAO">
+  	<sql id="searchSql">
+  		WHERE BOOKNUM>0 
+						
 		<choose>
-			<when test="kind == 'name'">
-				AND BOOKNAME LIKE '%' || #{search} || '%'	
+			<when test="kind=='name'">
+				AND BOOKNAME LIKE '%'||#{search}||'%'
 			</when>
 			<otherwise>
-				AND BOOKCONTENTS LIKE '%' || #{search} || '%'
+				AND BOOKCONTENTS LIKE '%'||#{search}||'%'
 			</otherwise>
 		</choose>
   	</sql>
   
-	<select id="getTotal" resultType="Long" parameterType="com.pbw.main.util.Pager">
-		SELECT
-			COUNT(BOOKNUM)
-		FROM
-			BANKBOOK
-		WHERE
-			<include refid="sql"></include>
+	<select id="getTotal" parameterType="com.iu.main.util.Pager" resultType="Long">
+		SELECT COUNT(BOOKNUM) FROM BANKBOOK
+		<include refid="searchSql"></include>
 	</select>
 	
-	<select id="getList" parameterType="com.pbw.main.util.Pager" resultType="BankBookDTO" >
-		SELECT 
-			BOOKNUM,
-			BOOKNAME,
-			BOOKRATE,
-			BOOKSALE
-		FROM	
-			(
-			SELECT
-				ROWNUM R,
-				B.* FROM
+	<select id="getList" parameterType="com.iu.main.util.Pager" resultType="BankBookDTO" >
+		SELECT BOOKNUM, BOOKNAME, BOOKRATE, BOOKSALE FROM	
+			(SELECT ROWNUM R, B.* FROM
 				(
-					SELECT
-						*
-					FROM
-						BANKBOOK
-					WHERE
-						<include refid="sql"></include>
-						
-						<!-- 
-						<if test="kind == 'name'">
-							AND BOOKNAME LIKE '%검색어%'
-						</if>
-						<if test="kind == 'contents'">
-							AND BOOKCONTENTS LIKE '%검색어%'
-						</if>
-						 -->
+					SELECT * FROM BANKBOOK
+					<include refid="searchSql" />
+					
+						  <!-- 
+						  <if test="kind == 'name'">
+						   AND	BOOKNAME LIKE '%검색어%' 
+						  </if>
+						  <if test="kind == 'contents'">
+						  	AND	BOOKCONTENTS LIKE '%검색어%' 
+						  </if> -->
+						   
 					ORDER BY BOOKNUM DESC
 				) B
 			)
-		WHERE
-			R BETWEEN #{startRow} 
-			AND #{lastRow}
+		WHERE R BETWEEN #{startRow} AND #{lastRow}
 	</select>
 	
-	<select id="getDetail" resultType="BankBookDTO"  parameterType="BankBookDTO">
-		SELECT * FROM BANKBOOK WHERE BOOKNUM=#{bookNum}
+	<select id="getDetail" resultMap="getDetailResult"  parameterType="BankBookDTO">
+		SELECT B.*, BF.* 
+		FROM BANKBOOK B
+			 LEFT JOIN
+			 BANKFILE BF
+			 ON(B.BOOKNUM=BF.BOOKNUM)
+		WHERE B.BOOKNUM=#{bookNum}
 	</select>
-	
 	<resultMap type="BankBookDTO" id="getDetailResult">
 		<id column="BOOKNUM" property="bookNum"/>
 		<result column="BOOKNAME" property="bookName"/>
@@ -83,23 +70,11 @@
 	
 	<insert id="setAdd" parameterType="BankBookDTO">
 		<selectKey keyProperty="bookNum" resultType="Long" order="BEFORE">
-			SELECT
-				BANK_SEQ.NEXTVAL
-			FROM
-				DUAL
+			SELECT BANK_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-		INSERT INTO
-			BANKBOOK 
-		VALUES
-			(
-			#{bookNum},
-			#{bookName},
-			#{bookRate},
-			#{bookSale},
-			#{bookContents}
-			)
+		INSERT INTO BANKBOOK 
+		VALUES (#{bookNum}, #{bookName},#{bookRate},#{bookSale},#{bookContents})
 	</insert>
-	
 	<insert id="setFileAdd" parameterType="BankBookFileDTO">
 		INSERT INTO BANKFILE (FILENUM,BOOKNUM, FILENAME, ORIGINALNAME)
 		VALUES (BANK_SEQ.NEXTVAL, #{bookNum}, #{fileName}, #{originalName})

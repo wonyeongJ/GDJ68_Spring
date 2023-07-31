@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,31 +9,29 @@
 <c:import url="../temp/bootStrap.jsp"></c:import>
 </head>
 <body>
+<c:import url="../temp/header.jsp"></c:import>
+<section class="container mt-5">	
+	<h1 class="my-4">Login Page</h1>
 	
-	<c:import url="../temp/header.jsp"></c:import>
-	<section class="container mt-5">
-		<h1 class="mb-3">Login Page</h1>
-		<form class="col-md-4 ms-auto" method="post" action="./login">
-		
-			<div class="row g-3 align-items-center">
-			  <div class="col-auto">
-			    <label for="id" class="col-form-label">ID</label>
-			    <input type="text" name="id" id="id" class="form-control" placeholder="ID를 입력하세요">
-			  </div>
-			</div>
-		
-			<div class="row g-3 align-items-center">
-			  <div class="col-auto">
-			    <label for="pw" class="col-form-label">Password</label>
-			    <input type="password" name="pw" id="pw" class="form-control" aria-labelledby="passwordHelpInline" placeholder="PW를 입력하세요">
-			  </div>
-			</div>
-		
-		
-			<button type="submit" class="btn btn-success mt-5 me-3">로그인</button>
-			<button type="button" class="btn btn-success mt-5">회원가입</button>
-		</form>
-	</section>
+	<form action="./login" method="post">
+	<div class="mb-3">
+	  <label for="id" class="form-label">ID</label>
+	  <input type="text" name="id" value="id123" class="form-control" id="id" placeholder="ID를 입력하세요">
+	</div>
 	
+	<div class="mb-3">
+	  <label for="pw" class="form-label">PASSWORD</label>
+	  <input type="password" name="pw" value="pw1" class="form-control" id="pw" placeholder="PW를 입력하세요">
+	</div>
+	
+	<div class="mb-3">
+		<button class="btn btn-primary">로그인</button>
+	</div>
+	
+	</form>
+	
+	
+</section>
+
 </body>
 </html>
